@@ -4,7 +4,9 @@ Para esse ambiente de teste, foi utilizado o VirtualBox com redirecionamento de 
 Instalação de dependências.
 
     sudo apt update -qq  &> /dev/null
-    sudo RUNLEVEL=1 apt install -yqq wget gnupg apt-transport-https git ca-certificates curl jq software-properties-common lsb-release python3-pip iproute2  &> /dev/null
+    
+    sudo RUNLEVEL=1 apt install -yqq wget gnupg apt-transport-https git ca-certificates  \
+    curl jq software-properties-common lsb-release python3-pip iproute2  &> /dev/null
 
 ## Configurações básicas após intalação
 ### Atualização dos pacotes dos sistema
