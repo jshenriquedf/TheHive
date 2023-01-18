@@ -70,7 +70,7 @@ Instalação de dependências.
  ## baixando arquivos do git
 
     cd /tmp
-    git clone ...
+    git clone https://github.com/jshenriquedf/TheHive-4.git
     sudo cp -a admin/thehive/. /etc/thehive
     
     sudo chown root:thehive /etc/thehive/application.conf
