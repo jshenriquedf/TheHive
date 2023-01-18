@@ -16,7 +16,7 @@ Instalação de dependências.
     echo "deb [signed-by=/usr/share/keyrings/corretto.gpg] https://apt.corretto.aws stable main"  \
         |  sudo tee -a /etc/apt/sources.list.d/corretto.sources.list
     
-    sudo apt update
+    sudo apt -y update && sudo apt -y upgrade
     sudo apt install java-common java-11-amazon-corretto-jdk
     
     echo JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto" | sudo tee -a /etc/environment 
@@ -29,7 +29,7 @@ Instalação de dependências.
     curl https://raw.githubusercontent.com/TheHive-Project/TheHive/master/PGP-PUBLIC-KEY | sudo apt-key add -
     echo 'deb https://deb.thehive-project.org release main' | sudo tee -a /etc/apt/sources.list.d/thehive-project.list
     
-    sudo apt-get update
+    sudo apt -y update && sudo apt -y upgrade
     sudo apt-get install thehive4
     
     sudo systemctl stop thehive
@@ -71,7 +71,7 @@ Instalação de dependências.
 
     cd /tmp
     git clone https://github.com/jshenriquedf/TheHive-4.git
-    sudo cp -a admin/thehive/. /etc/thehive
+    sudo cp -a TheHive-4/admin/thehive/. /etc/thehive
     
     sudo chown root:thehive /etc/thehive/application.conf
     sudo chown -R root:thehive /etc/thehive/application.conf.d/*
