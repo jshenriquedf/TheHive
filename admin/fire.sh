@@ -22,16 +22,19 @@ iptables -A INPUT -p tcp -m tcp --tcp-flags FIN,RST FIN,RST -j DROP
 iptables -A INPUT -p tcp -m tcp --tcp-flags FIN,ACK FIN -j DROP
 iptables -A INPUT -p tcp -m tcp --tcp-flags ACK,URG URG -j DROP
 iptables -A INPUT -m state --state INVALID -j DROP
+
 iptables -A INPUT -d 224.0.0.0/32 -j REJECT --reject-with icmp-port-unreachable
 iptables -A INPUT -p tcp -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p udp -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp -m state --state NEW,ESTABLISHED -m icmp --icmp-type 8 -j ACCEPT
-iptables -A INPUT -m state --state NEW -j IN-NEW
+iptables -A INPUT -m state --state NEW -j ACCEPT
 iptables -A INPUT -j LOG --log-prefix "IPT_INPUT: " --log-level 6
 iptables -A INPUT -j DROP
+
 iptables -A FORWARD -j LOG --log-prefix "IPT_FORWARD: " --log-level 6
 iptables -A FORWARD -j DROP
+
 iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -40,7 +43,7 @@ iptables -A OUTPUT -j LOG --log-prefix "IPT_OUTPUT: " --log-level 6
 iptables -A OUTPUT -j DROP
 
 # liberar acesso SSH para a organização
-iptables -A IN-NEW -s 192.168.56.0/24 -p tcp -m tcp --dport 22 --tcp-flags FIN,SYN,RST,ACK SYN -j ACCEPT
+iptables -A INPUT -s 192.168.56.0/24 -p tcp -m tcp --dport 22 --tcp-flags FIN,SYN,RST,ACK SYN -j ACCEPT
 
 # liberar acesso ao MISP para a organização
--A IN-NEW -s 192.168.56.0/24 -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m multiport --dports 80,443 -j ACCEPT
+iptables -A INPUT -s 192.168.56.0/24 -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m multiport --dports 80,443 -j ACCEPT
