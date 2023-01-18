@@ -47,3 +47,4 @@ iptables -A INPUT -s 192.168.56.0/24 -p tcp -m tcp --dport 22 --tcp-flags FIN,SY
 
 # liberar acesso ao MISP para a organização
 iptables -A INPUT -s 192.168.56.0/24 -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m multiport --dports 80,443 -j ACCEPT
+iptables -A INPUT -j DROP
