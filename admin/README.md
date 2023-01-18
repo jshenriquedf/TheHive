@@ -36,20 +36,28 @@ Instalação de dependências.
 
 # COnfiguração 
 ## Esturura de Configuração
-# 
-# /etc/thehive
-# |-- application.conf
-# |-- application.conf.d
-# |   |-- secret.conf
-# |   |-- service.conf
-# |   |-- ssl.conf
-# |   |-- proxy.conf
-# |   |-- database.conf
-# |   |-- storage.conf
-# |   |-- cluster.conf
-# |   |-- authentication.conf
-# |   |-- cortex.conf
-# |   |-- misp.conf
-# |   -- webhooks.conf
-# -- logback.xml
+ 
+ /etc/thehive
+ |-- application.conf
+ |-- application.conf.d
+ |   |-- secret.conf
+ |   |-- service.conf
+ |   |-- ssl.conf
+ |   |-- proxy.conf
+ |   |-- database
+ |   |   |-- database.conf
+ |   |   |-- database.conf
+ |   |   |-- database.conf
+ |   |-- storage
+ |   |   |-- storage.conf
+ |   |-- cluster
+ |   |   |-- cluster.conf
+ |   |-- authentication
+ |   |   |-- authentication.conf
+ |   |-- connectors
+ |   |   |-- cortex.conf
+ |   |   |-- misp.conf
+ |   |   |-- webhooks
+ |   |   |   |-- webhooks.conf
+ -- logback.xml
     
