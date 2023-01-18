@@ -9,10 +9,18 @@ Instalação de dependências.
     curl jq software-properties-common lsb-release python3-pip iproute2  &> /dev/null
 
 ## Configurações básicas após intalação
-### Atualização dos pacotes dos sistema
-Acessando a máquina via SSH:
+### Instalação do Java 11
 
-    ssh ceberus@127.0.0.1 -p 2222
+    wget -qO- https://apt.corretto.aws/corretto.key | sudo gpg --dearmor  -o /usr/share/keyrings/corretto.gpg
+    echo "deb [signed-by=/usr/share/keyrings/corretto.gpg] https://apt.corretto.aws stable main" |  sudo tee -a /etc/apt/sources.list.d/corretto.sources.list
+    
+    sudo apt update
+    sudo apt install java-common java-11-amazon-corretto-jdk
+    
+    echo JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto" | sudo tee -a /etc/environment 
+    export JAVA_HOME="/usr/lib/jvm/java-11-amazon-corretto"
+    
+    java -version
     
 ## Adicionao o usuário "cerberus" ao grupo sudoes:
 Logue como root:
