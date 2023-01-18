@@ -83,8 +83,39 @@ Instalação de dependências.
     ss -antl | grep LISTEN
     
     
+ ## Install Elasticsearch
 
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch |  sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main"  \
+        |  sudo tee /etc/apt/sources.list.d/elastic-7.x.list 
+    
+    sudo apt -y update && sudo apt -y upgrade
+    sudo apt install elasticsearch
+    
+ ## Configuração Elasticsearch
 
+    cat << EOF |  sudo tee /etc/elasticsearch/elasticsearch.yml
+    http.host: 127.0.0.1
+    transport.host: 127.0.0.1
+    cluster.name: hive
+    thread_pool.search.queue_size: 100000
+    path.logs: "/var/log/elasticsearch"
+    path.data: "/var/lib/elasticsearch"
+    xpack.security.enabled: false
+    script.allowed_types: "inline,stored"
+    EOF
+    
+    cat << EOF | sudo tee -a /etc/elasticsearch/jvm.options.d/jvm.options 
+    -Dlog4j2.formatMsgNoLookups=true
+    -Xms512m
+    -Xmx512m
+    EOF
+    
+    sudo systemctl start elasticsearch
+    sudo systemctl status elasticsearch
+    sudo systemctl enable elasticsearch
+    
+    ss -antl | grep LISTEN
 
 
 
