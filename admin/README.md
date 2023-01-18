@@ -34,7 +34,7 @@ Instalação de dependências.
     
     sudo systemctl stop thehive
 
-# COnfiguração 
+# Configuração 
 ## Esturura de Configuração
  
  /etc/thehive
@@ -60,4 +60,31 @@ Instalação de dependências.
  |   |   |-- webhooks
  |   |   |   |-- webhooks.conf
  -- logback.xml
+ 
+ ## Backups dos arquivos de instalação
+
+    cd /etc/thehive
+    sudo mkdir -p ./backup
+    sudo mv application.conf secret.conf backup/
     
+ ## baixando arquivos do git
+
+    cd /tmp
+    git clone ...
+    sudo cp -a admin/thehive/. /etc/thehive
+    
+    sudo chown root:thehive /etc/thehive/application.conf
+    sudo chown -R root:thehive /etc/thehive/application.conf.d/*
+    
+    sudo systemctl start thehive
+    sudo systemctl status thehive
+    sudo systemctl enable thehive
+    
+    ss -antl | grep LISTEN
+    
+    
+
+
+
+
+
