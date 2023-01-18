@@ -8,6 +8,11 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 iptables -F
 iptables -t nat -F
 
+#BLOQUEANDO TODO O TRAFEGO
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
 ########################
 ### Segurança básica ###
 ########################
@@ -29,22 +34,18 @@ iptables -A INPUT -p udp -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp -m state --state NEW,ESTABLISHED -m icmp --icmp-type 8 -j ACCEPT
 iptables -A INPUT -m state --state NEW -j ACCEPT
-iptables -A INPUT -j LOG --log-prefix "IPT_INPUT: " --log-level 6
 iptables -A INPUT -j DROP
 
-iptables -A FORWARD -j LOG --log-prefix "IPT_FORWARD: " --log-level 6
 iptables -A FORWARD -j DROP
 
 iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -j LOG --log-prefix "IPT_OUTPUT: " --log-level 6
 iptables -A OUTPUT -j DROP
 
 # liberar acesso SSH para a organização
-iptables -A INPUT -s 192.168.56.0/24 -p tcp -m tcp --dport 22 --tcp-flags FIN,SYN,RST,ACK SYN -j ACCEPT
+iptables -A FORWARD -p tcp -m tcp --dport 22 --tcp-flags FIN,SYN,RST,ACK SYN -j ACCEPT
 
 # liberar acesso ao MISP para a organização
-iptables -A INPUT -s 192.168.56.0/24 -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m multiport --dports 80,443 -j ACCEPT
-iptables -A INPUT -j DROP
+iptables -A FORWARD -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m multiport --dports 80,443 -j ACCEPT
