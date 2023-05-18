@@ -130,6 +130,62 @@ log () {
 
 
 
+####################
+# CHECK REQUISITOS #
+####################
+
+check-supported-os() {
+  DIST=`cat /etc/os-release | grep -e ^ID= | cut -d '=' -f 2 | tr -d '"'`
+  VERSION=`cat /etc/os-release | grep -e ^VERSION_ID= | cut -d '=' -f 2 | tr -d '"'`
+
+  if   echo ${OSDEB} | grep "${DIST}${VERSION}" 
+  then 
+    INSTALLTYPE="DEB"
+  elif echo ${OSRPM} | grep "${DIST}${VERSION}"
+  then
+      INSTALLTYPE="RPM"
+  else
+    log ko "Operating System of the version is not suported. Check supported OS on https://docs.strangebee.com"
+    exit 1
+  fi
+}
+
+## CHECK AVAILABLE RESOURCES
+check-available-resources() {
+  NBPROC=`nproc`
+  RAM=`vmstat  -s | grep "total memory" | xargs | cut -d ' ' -f 1`
+  if [ ${NBPROC} -lt ${MINREQCPU} ] || [ ${RAM} -lt ${MINREQRAM} ]
+  then
+    log ko "4 core CPUs and 16GB of memory are required to run this application"
+    exit 1
+  fi
+}
+
+check-installed-application() {
+  INSTALLING=$1
+  if [ -d "/etc/thehive/" ] && [ -d "/opt/thehive/" ]
+  then 
+    INSTALLED="THEHIVE"
+  elif [ -d "/etc/cortex/" ] && [ -d "/opt/cortex/" ]
+  then  
+    INSTALLED="CORTEX"
+  else
+    INSTALLED="NONE"
+  fi
+  if [[ ${INSTALLED} == ${INSTALLING} || ( ${INSTALLED} != "NONE"  && ${CHECKSAMESERVER} == true   )  ]] 
+  then
+    log ko "${INSTALLED} is already installed on the system. Exiting ..."
+    exit 1
+  fi
+}
+
+
+
+
+
+
+
+
 
 
 
